@@ -48,7 +48,7 @@ func main() {
 	router.HandleFunc("/Users", GetUsersEndpoint).Methods("GET")
 	router.HandleFunc("/user/{id}", GetuserEndpoint).Methods("GET")
 	router.HandleFunc("/post", CreatepostEndpoint).Methods("POST")
-	router.HandleFunc("/Posts", GetpostsEndpoint).Methods("GET")
+	router.HandleFunc("/posts", GetpostsEndpoint).Methods("GET")
 	router.HandleFunc("/post/{id}", GetuserEndpoint).Methods("GET")
 	http.ListenAndServe(":12345", router)
 }
@@ -67,7 +67,7 @@ func CreatepostEndpoint(response http.ResponseWriter, request *http.Request) {
 	response.Header().Set("content-type", "application/json")
 	var post post
 	_ = json.NewDecoder(request.Body).Decode(&post)
-	collection := client.Database("Samrat").Collection("Posts") //Enterring posts
+	collection := client.Database("Samrat").Collection("posts") //Enterring posts
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 	result, _ := collection.InsertOne(ctx, post)
 	json.NewEncoder(response).Encode(result)
@@ -94,7 +94,7 @@ func GetpostEndpoint(response http.ResponseWriter, request *http.Request) {
 	params := mux.Vars(request)
 	id, _ := primitive.ObjectIDFromHex(params["id"])
 	var post post
-	collection := client.Database("Samrat").Collection("Posts") //Enter the name of user to be found in the list
+	collection := client.Database("Samrat").Collection("posts") //Enter the name of user to be found in the list
 	ctx, _ := context.WithTimeout(context.Background(), 30*time.Second)
 	err := collection.FindOne(ctx, Post{PostID: id}).Decode(&post)
 	if err != nil {
@@ -152,5 +152,5 @@ func GetpostsEndpoint(response http.ResponseWriter, request *http.Request) { //A
 		response.Write([]byte(`{ "message": "` + err.Error() + `" }`))
 		return
 	}
-	json.NewEncoder(response).Encode(Posts)
+	json.NewEncoder(response).Encode(posts)
 }
