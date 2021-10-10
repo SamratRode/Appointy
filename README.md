@@ -12,4 +12,4 @@ Six functions have been made:-
 
 Future Work
 1. to make a function to get all posts of a user using post id
-2. to add encryptions, to enhance security of the application.
+2. to add encryptions, to enhance security of the application.:}
